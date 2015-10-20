@@ -155,7 +155,7 @@ Use keyword `extern` when declaring variables in headers (.h)
 ## Include Guard
 
 In program1.h:
-```
+```cpp
 #ifndef PROGRAM1_H <-- not defined
 #define PROGRAM1_H <-- defines it now
 
