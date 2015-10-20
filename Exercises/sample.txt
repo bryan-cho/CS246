@@ -1,0 +1,10 @@
+hello
+world
+cs
+246
+sample
+text
+file
+ifstream
+while
+loop
