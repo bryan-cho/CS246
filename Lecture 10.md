@@ -16,7 +16,7 @@ When overloading operators, we must put `const` for our references to allow **ca
 
 If we do not place `const`, then we are not allowed to do expressions like this:
 
-```
+```cpp
 someType x;
 someType y;
 
@@ -31,7 +31,7 @@ Recall that in C++ we cannot bind a reference to an *rvalue*.
 
 If that was possible, we could do things like this:
 
-```
+```cpp
 COMPLEX& c = a + b; //What exactly are we referencing?
 c = 137;            //What did we just change?
 ```
@@ -44,7 +44,7 @@ Hence, by changing the overloaded operator to take a `const` reference, we can c
 
 Suppose we have:
 
-```
+```cpp
 struct Grade {
     string name;
     string grade;
@@ -53,7 +53,7 @@ struct Grade {
 
 We can do the following:
 
-```
+```cpp
 ostream &operator<< (ostream &out, const Grade &g) {
     out << "Student:" << g.name << " ";
     out << g.grade << "%";
@@ -67,7 +67,7 @@ so that we can easily output student grades.
 
 For input operators, we should not take in a `const` reference.
 
-```
+```cpp
 istream &operator>> (istream &in, Grade &g) { // Note: Grade is not const in this one
     in >> g.name >> g.grade;
     if (g.grade < 0) g.grade = 0;

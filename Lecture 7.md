@@ -10,7 +10,7 @@ In C++ there is an implicit conversion from cin (istream) to (void\*)
 
 We can use this fact to do things like:
 
-```
+```cpp
 int main() {
     int i;
     while (cin >> i) {
@@ -37,7 +37,7 @@ This is an example of operator overloading
 
 Once a read fails, we must call `cin.clear()` to lower the fail flag, then `cin.ignore()` if we want to ignore that bad input.
 
-```
+```cpp
 #include <iostream>
 
 int main() {
@@ -91,7 +91,7 @@ e.g.) files
 
 `ofstream` - write to a file
 
-```
+```cpp
 #include <iostream>
 #include <fstream>
 

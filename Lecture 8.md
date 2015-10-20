@@ -4,7 +4,7 @@
 
 We can use a variable of type `ofstream` just like `cout`.
 
-```
+```cpp
 ofstream file("suite.txt");
 string s;
 while(cin >> s) {
@@ -26,7 +26,7 @@ We get access to:
 
 This takes input and "builds" a string by concatenating.
 
-```
+```cpp
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -43,7 +43,7 @@ int main () {
 
 Useful for converting a string to an int.
 
-```
+```cpp
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -73,7 +73,7 @@ int main () {
 
 Read from `stdin` and print if number
 
-```
+```cpp
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -120,7 +120,7 @@ Same applies for `!=, <, >, <=, >=`
 
 We will refactor this code to have a function that prints the contents of a file instead.
 
-```
+```cpp
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -134,7 +134,7 @@ int main () {
 }
 ```
 
-```
+```cpp
 void print(string filename) {
     ifstream file(filename) <-- this will not compile
 }
@@ -144,7 +144,7 @@ The code above will not compile since ifstream(file) expects a C-style string.
 
 We must make the following change:
 
-```
+```cpp
 void print(string filename) {
     ifstream file(filename.c_str());
 }
@@ -152,7 +152,7 @@ void print(string filename) {
 
 Now we introduce the concept of default arguments.
 
-```
+```cpp
 void print(string filename = "default.txt") {
     ...
 }
@@ -172,7 +172,7 @@ Valid:
 
 The above is equivalent to defining
 
-```
+```cpp
 void print();
 void print(string filename);
 void print(string filename, int length);
@@ -197,7 +197,7 @@ Functions in C++ can have the same name as long as they differ in:
 
 Example:
 
-```
+```cpp
 int negate(int a) { return -1 * a; }
 bool negate(bool a) { return !a; }
 ```
@@ -206,14 +206,14 @@ bool negate(bool a) { return !a; }
 
 We have seen this from the following:
 
-```
+```cpp
 21 >> 3;   // bit shifting
 cin >> n;  // input operator
 ```
 
 Note that an alternate form of `>>` is 
 
-```
+```cpp
 operator>>(21, 3)
 operator>>(cin, n)
 ```
