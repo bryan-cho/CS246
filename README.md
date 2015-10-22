@@ -23,3 +23,5 @@ Lecture 9 - Review C
 Lecture 10 - Dynamic Memory, Operators, Preprocessor
 
 Lecture 11 - Preprocessor Part II, Separate Compilation
+
+Lecture 12 - C++ Objects
