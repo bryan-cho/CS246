@@ -25,3 +25,5 @@ Lecture 10 - Dynamic Memory, Operators, Preprocessor
 Lecture 11 - Preprocessor Part II, Separate Compilation
 
 Lecture 12 - C++ Objects
+
+Lecture 13 - Copy Constructor, Destructor, Assignment Operator
