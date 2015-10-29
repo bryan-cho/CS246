@@ -4,9 +4,9 @@
 
 In C++ there is an implicit conversion from cin (istream) to (void\*)
 
-`cin` evaluates to `true` if `!cin.fail()`
+`cin` evaluates to `true` if `!(cin.fail())`
 
-`cin` evaluates to `true` if `cin.fail()`
+`cin` evaluates to `false` if `cin.fail()`
 
 We can use this fact to do things like:
 
