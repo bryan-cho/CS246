@@ -29,3 +29,5 @@ Lecture 12 - C++ Objects
 Lecture 13 - Copy Constructor, Destructor, Assignment Operator
 
 Lecture 14 - Assignment Operator, Rule of Three, Arrays of Objects
+
+Lecture 15 - const, static, Singleton Design Pattern, Encapsulation
