@@ -58,6 +58,8 @@ UML: Unified Modeling Language
 
 **Composition**: embed an object within another object
 
+**UML**: Arrow with black filled diamond (object that owns) and black filled arrowhead (object that is owned)
+
 ```cpp
 class Vec{
     int x,y,z;
@@ -88,6 +90,8 @@ A "owns a" B if
 
 ##Aggregation
 
+**UML**: Arrow with white diamond (aggregate class) and black filled arrowhead on other side. `*` is used to denote multiple instances. Role named under the arrow is what the aggregate class knows the instances by.
+
 Analogy: parts in a catalog, ducks in a pond
 
 A "has a " B
@@ -101,6 +105,8 @@ class Pond{
 ```
 
 ##Inheritance
+
+**UML**: Blank triangular arrowhead (like a slice of pizza) points to the base class.
 
 Book
 - title
@@ -186,5 +192,3 @@ Protected:
 
 - only code in this class or subclasses
 - accessible by code in defining class and sub classes
-
-
