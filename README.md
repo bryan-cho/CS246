@@ -33,3 +33,7 @@ Lecture 14 - Assignment Operator, Rule of Three, Arrays of Objects
 Lecture 15 - const, static, Singleton Design Pattern, Encapsulation
 
 Lecture 17 - Virtual and Pure Virtual Methods
+
+Lecture 18 - Design Patterns, Observer, Decorator, Factory
+
+Lecture 19 - Template Method Pattern, C++ Templates, STL 
