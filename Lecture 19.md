@@ -149,3 +149,6 @@ for(vector<int>::reverse_iterator it = v.rbegin(); it != v.rend(); ++it) {
 }
 ```
 
+We must remember to individually delete heap allocated objects in vectors or we will leak memory.
+
+Just loop over the vector and delete individual objects.
