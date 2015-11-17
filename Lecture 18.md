@@ -1,6 +1,6 @@
 # Lecture 18 - Nov. 12, 2015
 
-Design Patterns, Observer, Decorate, Factory
+Design Patterns, Observer, Decorator, Factory
 
 ## Observer Pattern
 
