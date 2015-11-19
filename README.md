@@ -37,3 +37,5 @@ Lecture 17 - Virtual and Pure Virtual Methods
 Lecture 18 - Design Patterns, Observer, Decorator, Factory
 
 Lecture 19 - Template Method Pattern, C++ Templates, STL 
+
+Lecture 20 - Visitor Pattern
