@@ -39,3 +39,5 @@ Lecture 18 - Design Patterns, Observer, Decorator, Factory
 Lecture 19 - Template Method Pattern, C++ Templates, STL 
 
 Lecture 20 - Visitor Pattern
+
+Lecture 21 - Compilation Dependencies, Pointer to Implementation, "Big Three"
