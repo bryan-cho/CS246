@@ -43,3 +43,5 @@ Lecture 20 - Visitor Pattern
 Lecture 21 - Compilation Dependencies, Pointer to Implementation, "Big Three"
 
 Lecture 22 - Big Three (continued), Casting
+
+Lecture 23 - Exceptions
