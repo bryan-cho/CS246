@@ -663,7 +663,16 @@ for (vector<int>::iterator i = v.begin(); i!= v.end(); i++) {
 It is basically an abstraction to a pointer. Just like how we were able to do pointer arithmetic in C, we can use iterators to accomplish the same task.
 
 - STL map
-- Visitor Design Pattern
+**Visitor Design Pattern**
+
+* What if we need to dispatch based on **two** run time types of objects instead of just one?
+* The trick is the Visitor Design Pattern with **double dispatch**
+* Say we have Enemy and Weapon combinations that need to do different things
+* We make an abstract *Weapon* class that overloads the method for each type of **Enemy**
+* Each concrete derived **Weapon** class then overrides each overload
+* The Enemy passes itself into the Weapon's `strike` method
+* Then the Weapon strikes the argument with `*this`, which is itself
+
 - Double Dispatch
 - Adding functionality without changing class hierarchy code
 
