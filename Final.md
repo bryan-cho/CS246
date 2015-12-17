@@ -106,6 +106,37 @@ Know what to do with a bad cast.
 
 * Derived class constructors call base class constructors
 
+When an object is constructed:
+
+1. Space is allocated
+2. Default constructors are called for all fields in declaration order
+3. Constructor body runs
+
+When an object is destroyed:
+
+1. Destructor body runs
+2. Destructors are invoked for all fields in reverse order
+3. Space is deallocated
+
+Basically the reverse of an object construction.
+
+For derived classes, the story is slightly different:
+
+When a derived class object is constructed:
+
+1. Space is allocated
+2. Super class is constructed
+3. Default constructors are called for all fields in declaration order
+4. Constructor body runs
+
+When a derived class object is destroyed:
+
+1. Destructor body runs
+2. Destructors are invoked for all fields in reverse order
+3. Destructor for super class is invoked
+4. Space is deallocated
+
+
 **Destructors (dtor)**
 
 * Destructors are run when an object is destroyed
@@ -328,11 +359,92 @@ Usually need to implement all three.
     * Everything is inherited!
     * In memory, the super class literally sits on top of the derived class and so everything from the base class is essentially inherited by the derived class
 * Subclasses cannot access private members but **DO** exist
+* **NOTE** We cannot initialize the private members of the field in the derived class constructor!
 
+**4 steps to object creation**
 
-- 4 steps to object creation
-- protected visibility
-- Virtual keyword (isItHeavy example) 
+* See above
+
+**protected visibility**
+
+* To mitigate the issue of derived classes not having access to the base class members, we can have *protected* visibility for members
+* `protected` members give full access to derived classes
+* Good style is to provide `protected` accessors/mutators instead of giving direct access to members 
+
+**Virtual keyword (isItHeavy example)** 
+
+* This is an extended example but worth going through
+
+We can have many cases:
+
+```cpp
+#include <iostream>
+class Book {
+    public:
+        void sayHello() {
+            std::cout << "Hi I'm a book" << std::endl;
+        }
+};
+
+class TextBook : public Book {
+    public:
+        void sayHello() {
+            std::cout << "Hi I'm a textbook" << std::endl;
+        }
+};
+```
+
+Suppose we have the above set up.
+
+Here are the different cases that can arise:
+
+```cpp
+void sayHelloTB(TextBook& t) {
+    t.sayHello();
+}
+
+void sayHello(Book& b) {
+    b.sayHello();
+}
+
+int main() {
+    Book b;
+    b.sayHello(); // prints "Hi I'm a book"
+    TextBook t;
+    t.sayHello(); // prints "Hi I'm a textbook"
+    sayHello(t); // prints "Hi I'm a book"
+    sayHelloTB(t); // prints "Hi I'm a textbook"   
+    Book* pb = new TextBook();
+    pb->sayHello(); // prints "Hi I'm a book"
+}
+```
+
+Now, we try the same example but with a different set up:
+
+```cpp
+#include <iostream>
+class Book {
+    public:
+        virtual void sayHello() {
+            std::cout << "Hi I'm a book" << std::endl;
+        }
+};
+```
+
+Now, the above main function prints the following:
+
+```
+Hi I'm a book
+Hi I'm a textbook
+Hi I'm a textbook
+Hi I'm a textbook
+Hi I'm a textbook
+```
+
+Notice the difference? Even if the function expects a `Book` reference, the `virtual` keyword makes sure that the correct function is called based on the run time type of `b`.
+
+Check the example in the `exam` folder.
+
 - Polymorphism 
 - Virtual Destructor: why and when
 - make (covered in tutorial): only basic understanding needed of what it does
