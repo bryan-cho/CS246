@@ -258,6 +258,16 @@ Usually need to implement all three.
 * Create only one object of this kind
 * Wallet - singleton
 * Expense - all have access to wallet
+* static pointer to an instance
+* static getInstance function
+* Private constructor
+* Public getter for the only instance
+    * Within the getInstance, it creates the instance if it doesn't exist
+    * We check if the instance is NULL and create it if it is NULL
+    * Return the new instance
+    * Otherwise, we just return the existing instance
+* Each `Expense` constructor sets the wallet to be `Wallet::getInstance()`
+* Delete it atexit
 
 **atexit function from cstdlib**
 
@@ -344,6 +354,8 @@ Usually need to implement all three.
     * Tablet, for a tablet computer
 * This does not capture the relationship between the different classes
 * To solve this, we use **inheritance**
+* "is a" relationship
+* A "is a" B if B inherits from A
 
 **Base Class**
 
@@ -445,14 +457,177 @@ Notice the difference? Even if the function expects a `Book` reference, the `vir
 
 Check the example in the `exam` folder.
 
-- Polymorphism 
-- Virtual Destructor: why and when
-- make (covered in tutorial): only basic understanding needed of what it does
-- Pure Virtual Methods
-- Abstract vs Concrete Classes
-- Observer Pattern
-- Decorator Pattern
-- Factory Method Pattern
+**Polymorphism**
+
+* Multiple definitions
+    * "The ability to accommodate multiple types in a single abstraction (class)
+    * "Call to a method will cause a different function to be executed depending on the type of the object at *run time*
+    * Overloading, overriding, virtual methods, etc. 
+
+**Virtual Destructor: why and when**
+
+* Recall: when a subclass destructor is called, it will call the base class' destructor as well
+* We want to use virtual destructors so that when an inheriting object is destroyed, it calls the correct destructor
+* Since if the derived class destructor gets called, the base class destructor gets called, we need not worry about calling the base class destructor
+* Use this when you are using **base class pointers to point at many different types of derived classes**
+* This is also important if any derived object is "owned by" some other object
+
+**make (covered in tutorial): only basic understanding needed of what it does**
+
+* The general format is this:
+
+```make
+<target>: [ <dependency> ]
+    [ <TAB> <command> <endl> ]
+```
+
+Realistically, just memorize how to write one of these:
+
+```make
+CXX = g++
+CXXFLAGS = -Wall -MMD -g
+EXEC = main
+OBJECTS = main.o book.o textbook.o comic.o ...
+DEPENDS = ${OBJECTS:.o=.d}
+
+${EXEC}: ${OBJECTS}
+    ${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
+
+-include ${DEPENDS}
+
+.PHONY: clean
+
+clean:
+    rm ${OBJECTS} ${EXEC} ${DEPENDS}
+```
+
+**Pure Virtual Methods**
+
+Pure virtual methods are important for the concept of **abstract** classes.
+
+A simple example:
+
+What if we have a `Student` class that has derived classes, `Coop` and `Regular`?
+
+We really have no reason to have a *concrete implementation* of the base class, `Student`.
+
+Hence, we make `Student` abstract. Typically this will be for when you either:
+
+* Don't want any actual instances of a class
+* Do not want to implement a method that would never be used for a generic base class
+
+```cpp
+
+class Student {
+    public:
+        virtual void foo() = 0;
+};
+
+class Coop : public Student {
+    public:
+        void foo() {
+            return;
+        }
+};
+
+class Regular : public Student {
+    public:
+        void foo() {
+            return;
+        }
+};
+```
+
+Note that **ALL MEMBERS ARE INHERITED** so if the pure virtual method is not implemented in the derived class, the derived class will also be **abstract**
+
+**Abstract vs Concrete Classes**
+
+* Classes that contain at least one pure virtual method are considered **abstract**
+* Classes that contain no pure virtual methods are considered **concrete**
+* 1 to many dependency
+
+**Observer Pattern**
+
+Also known as *publish-subscribe pattern*
+
+We use the terms *subject* and *observer* to describe *publisher* and *subscriber* respectively.
+
+**Subject**: 
+    
+* Observable, generates data
+* Need not know details of the Observer
+* Subject "has a" Observer
+
+**Observer**: 
+
+* Observes subject for data and responds to it
+
+Flow:
+
+1. Observers are attached to the subject (`Subject::attach(Observer*)`)
+2. Subject's state is updated
+3. Subject notifies each observer (`Subject::notifyObservers()`)
+4. Each observer responds based on data received (`Observer::notify()`) (actually called by `notifyObservers()` above, but implemented in Observer)
+
+The key thing to note here is:
+
+There is an abstract subject and a concrete subject as well as an abstract observer and a concrete observer.
+
+The abstract subject "has a" array of **abstract** observers.
+
+The concrete observer "has a" **concrete** subject.
+
+To think about this intuitively, the subject need not know the details of the observer. However, the observer can only subscribe to a specific subject as it needs specific data.
+
+The subject just sends data, *trusting* that the `notify` method is implemented as intended. Hence, it only needs to have an array of the base class and call notify on them.
+
+The object needs to subscribe to specific things. Hence, it makes sence that the observer "has a" concrete subject object. Calling "attach" will add the observer into the "list of objects to notify". Whenever the subject changes, it will notify the list of objects that asked to be notified. 
+
+TBH: Just look at and memorize the structure of the ObserverUML pdf in the directory.
+
+Some things to consider:
+
+1. Subject and concrete Subject can be merged
+2. If notifying is not enough, we can have the concrete subject implement a `getState` function
+
+**Decorator Pattern**:
+
+Possibly the most intuitive pattern out of all of them.
+
+Basically, we have a plain object, and we add on to that object to fit to what we need using *decorator* classes.
+
+For example:
+
+We have a plain cup of coffee.
+
+Then we add sugar, milk, syrup, and whipped creme.
+
+Instead of having separate classes for every type of combination, we make it closely model the real life interaction of beverage + toppings.
+
+Key thing to make note of is of course, the UML.
+
+We have an abstract *Component* class. This is our base class.
+
+Everything is pure virtual for this abstract Component class.
+
+The concrete Component class will be the "plain" object and it inherits from *Component*.
+
+The abstract *Decorator* class will be the base class for our "decorations".
+
+Decorator is abstract because it doesn't override the pure virtual methods in the Component.
+
+We can have many different concrete Decorations that inherit from this abstract *Decorator* class.
+
+**Factory Method Pattern**
+
+This is for when we want *conditional construction of objects*.
+
+For instance, we have a game that has stages where turtles and bullets are spawned randomly. Instead of calling the constructors randomly, we can put in a "factory method" that creates Enemies.
+
+Layout:
+
+![Picture 1](https://github.com/bryanc208/CS246/blob/master/pic1.png "pic")
+
 - Template Method Pattern
 - Template classes
 - STL: vector/iterators
