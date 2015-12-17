@@ -628,29 +628,175 @@ Layout:
 
 ![Picture 1](https://github.com/bryanc208/CS246/blob/master/pic1.png "pic")
 
-- Template Method Pattern
-- Template classes
-- STL: vector/iterators
+We have the Enemy classes on the left. These enemy classes will be generated in the Levels. The `NormalLevel` will generate more `Turtle` objects and the `Castle` will generate more `Bullet` objects. 
+
+The abstract `Level` will have a pure virtual `createEnemy` where each concrete `Level` object will have a different implementation of `createEnemy`.
+
+This is good because we can easily add more enemies and change how a `Level` works without having to go through much troubles. We can also make a `Boss` singleton so that there can only be one boss in each level.
+
+**Template Method Pattern**
+
+* A turtle needs to have a head, shell, and feet.
+* We want to change up turtles so that we can maybe just change the shell colour.
+* We make the `drawShell()` function pure virtual and then simply override it in the derived classes `RedTurtle` and `GreenTurtle`
+
+![Picture 2](https://github.com/bryanc208/CS246/blob/master/pic2.png "pic")
+
+**Relationship Summary**
+
+![Picture 3](https://github.com/bryanc208/CS246/blob/master/pic3.png "pic")
+
+**Template classes** 
+
+* See example in exam directory
+
+**STL: vector/iterators**
+
+We go over this briefly
+
+```cpp
+for (vector<int>::iterator i = v.begin(); i!= v.end(); i++) {
+    cout << *i << endl;
+}
+```
+
+It is basically an abstraction to a pointer. Just like how we were able to do pointer arithmetic in C, we can use iterators to accomplish the same task.
+
 - STL map
 - Visitor Design Pattern
 - Double Dispatch
 - Adding functionality without changing class hierarchy code
-- Circular Dependencies: solution: forward declare when possible
-- Compilation Dependencies: when to forward declare vs when to include
-- pImpl Idiom
-- Generalize the pImpl Idiom: Bridge Design Pattern
+
+**Circular Dependencies: solution: forward declare when possible**
+
+* When A includes B and B includes A
+
+**Compilation Dependencies: when to forward declare vs when to include**
+
+* Class that inherits from A needs to **include** A
+* Class that has A as a member needs to **include** A
+* Class that has a pointer to an A object can **forward declare**
+* Class that has a function that uses A can **forward declare**
+
+General rule of thumb: if at compile time, the code needs to know the exact size of object, we must include it.
+
+**pImpl Idiom**
+
+* Hide away all member data variables that are private
+    * Since these are private, there can be no code that depends on it
+    * However, any code that includes this header must recompile if any change is made
+    * We can mitigate this by the pImpl Idiom
+* Create a struct that contains the member data
+    * Keep a pointer to an object of that type 
+    * We now only need to forward declare the struct `somethingImpl`
+ 
+**Generalize the pImpl Idiom: Bridge Design Pattern**
+
+![Picture 4](https://github.com/bryanc208/CS246/blob/master/pic4.png "pic")
+
+We make the Impl a base class and keep subclasses to implement other details.
+
+This is known as the bridge pattern.
+
 - Revisiting the big three (inheritance)
-- Partial Assignment problem
-- Mixed Assignment problem
-- Solution without making operator= virtual
-- Casting: 4 kinds of casts
-- Exceptions
+**Partial Assignment problem**
+
+```cpp
+Book *bp1 = new TextBook();
+Book *bp2 = new TextBook();
+*bp1 = *bp2;
+```
+
+This is partial assignment. We are using base class assignment operator to assign derived class objects.
+
+We can make the assignment operator virtual. However, we would need to override it using `Book` as a parameter and not `TextBook`!
+
+This leads to next point.
+
+**Mixed Assignment problem**
+
+Three conditions for mixed assignment:
+
+1. Base class assignment operator is virtual
+2. Derived class assignment operator is overriden with base class as parameter
+3. Derived class assignment operator is used to assign a derived class object of a different type
+
+i.e.) `TextBook`'s assignment operator is used for a `Comic` object
+
+**Solution without making operator= virtual**
+
+* First the **partial assignment** problem happens if everything was done without any modifications
+* So we see that making the assignment operator virtual created a potential for **mixed assignment**
+* So now we fix all of this by making the **always** making the base class abstract
+* Then we make the assignment operator to be protected
+* We can manually assign the base class portion of the object before doing the derived class portion of the object 
+
+**Casting: 4 kinds of casts**
+
+1. `static_cast` - converting pointer of base class to pointer of derived class, or int to float (vice versa)
+2. `const_cast` - convert const to variable to mutable variable
+3. `reinterpret_cast` - purely a compiler directive which instructs the compiler to treat the sequence of bits of expression as if it had the `new_type`
+4. `dynamic_cast` - if cast successful, `dynamic_cast` returns a valud of type `new_type`. If cast fails, returns null pointer
+
+**Exceptions**
+
+* stack unwinding: popping the call stack until a suitable handler is found
+* try-catch: try and then catch the exception, handle it
+    * If handled, no more code is run
+
+We can rethrow:
+    * `throw e` - creates a copy of e then throws
+    * `throw` - rethrow without copy
+
+We can also rethrow another type of exception.
+
+**CATCH EXCEPTIONS BY REFERENCE**
+
+* `(...)` will catch all
+* Can throw anything (not just Exceptions)
+
+**Common Exceptions**: 
+
+* `out_of_range`: index out of bounds
+* `bad_alloc`: call to `new` fails
+* `bad_cast`: `dynamic_cast` to a reference fails
+
 - Exceptional Control Flow 
+
+* Sequential execution
+
 - Stack unwinding
 - Solution to mixed/partial assignment problem with virtual operator=
-- Three levels of exception safety
-- `auto_ptr`
-- VTable and Vptr
+
+* Now we introduce the other solution to the mixed/partial assignment problem
+* Instead of making the base class abstract, we can simply do a `dynamic_cast` to change the right side to the right type
+* We can override the virtual method as required but simply do a cast before we do anything else
+
+**Three levels of exception safety**
+
+* We can make our code exception safe with the three levels of exception safety:
+
+1. Basic guarantee - program remains in valid state (no memory leak, dangling pointers, etc.)
+2. Strong guarantee - if an exception occurs in function f, f leaves the program state unchanged, "as if the function was never called"
+3. No throw guarantee - function always succeeds
+
+`auto_ptr`
+
+* stack allocated
+* this will call the dtor of `auto_ptr` when an exception is thrown and the pointer will be properly deleted
+* **copy constructor takes a non-const reference**
+* the copy constructor/assignment operator will **STEAL** the field of the **RHS**
+* so the left hand side will take ownership of the pointer on the right
+
+**VTable and Vptr**
+
+* VTable stores addresses to where the code "resides"
+* Each object will now contain a **vptr** which stores a pointer to the **VTable** of the class
+* There is one **VTable** per class
+* When a function call occurs for virtual methods, the address of the method to call is "lookped up" to get the correct code to execute
+* All virtual methods must be implemented to create a concrete class since otherwise we would try to dereference a **NULL** pointer!
+* Cost is 8 bytes per each object created
+
 - superficial knowledge of Return Value Optimization (RVO)
 
 
