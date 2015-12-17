@@ -100,9 +100,7 @@ Course notes are fine for this too.
 
 Know what to do with a bad cast.
 
-## Design Patterns
-
-#Final Exam Concepts (Post Midterm):
+## Final Exam Concepts (Post Midterm):
 
 **Gotchas**:
 
@@ -130,100 +128,100 @@ Know what to do with a bad cast.
 
 **When to implement custom dtor**
 
-    * we should implement a custom destructor when there are heap allocated fields that need to be deleted
-        * this is only when the class has an "owns a" relationship with the field
+* we should implement a custom destructor when there are heap allocated fields that need to be deleted
+    * this is only when the class has an "owns a" relationship with the field
 
 **Separate compilation of classes**
 
-    * we split each 
+* we split each 
 
 **:: the scope resolution operator**
 
-    * need to use this when we are implementing methods
-    * this changes the scope to be local to the class we specify
+* need to use this when we are implementing methods
+* this changes the scope to be local to the class we specify
 
 **Assignment operator (operator=)**
 
-    * things to remember:
-        * can only be defined as a method
-        * other operators must be defined as a function
-        * right associated
-        * check for self-assignment as this should be valid
-            * check if this is the same as the address of the other
-        * remember to make it exception safe
-            * copy and swap idiom is useful for this
-                * make temps, and swap
-    * fundamentally different from copy constructor
-        * copy constructor makes an entirely new object
-        * assignment operator makes changes to an existing object
+* things to remember:
+* can only be defined as a method
+* other operators must be defined as a function
+* right associated
+* check for self-assignment as this should be valid
+    * check if this is the same as the address of the other
+* remember to make it exception safe
+    * copy and swap idiom is useful for this
+        * make temps, and swap
+* fundamentally different from copy constructor
+* copy constructor makes an entirely new object
+* assignment operator makes changes to an existing object
 
 **Signature of operator=**
     
-    * returns a reference (this is so we can make it associative)
-    * can either pass by reference or by value
-    * remember to make a copy if taken by reference
-    * implemented as a method
+* returns a reference (this is so we can make it associative)
+* can either pass by reference or by value
+* remember to make a copy if taken by reference
+* implemented as a method
 
 **default operator= (shallow assignment)**
     
-    * default assignment operator basically copies all fields
-    * pointers will be copied to have the same address
-    * this is called a shallow copy
+* default assignment operator basically copies all fields
+* pointers will be copied to have the same address
+* this is called a shallow copy
 
 **When to write custom operator=**
     
-    * we need to do this whenever we require deep copy
-    * we also need this whenever we need have derived classes that have problems with assignment (mixed assignment/partial assignment)
+* we need to do this whenever we require deep copy
+* we also need this whenever we need have derived classes that have problems with assignment (mixed assignment/partial assignment)
 
 **self assignment check**
 
-    * this was covered above
+* this was covered above
 
 **Assignment operator using copy and swap**
 
-    * covered above
+* covered above
 
 **Rule of 3**
 
-    If you need to write a custom: 
-        * copy constructor
-        * destructor
-        * operator=
-    
-    Usually need to implement all three.
+If you need to write a custom: 
+* copy constructor
+* destructor
+* operator=
+
+Usually need to implement all three.
 
 **Member functions vs Standalone functions**
-    
-    * Member functions or methods have an implicit `this` pointer
-    * Methods can be encapsulated (security)
-    * Standalone functions do not have the above
+
+* Member functions or methods have an implicit `this` pointer
+* Methods can be encapsulated (security)
+* Standalone functions do not have the above
 
 **Arrays of Objects** 
 
-    * we can have arrays of objects
-        * pointers or objects are fine
-    * when the array is initialized, the default constructor will run (or no parameter constructor) for each object
+* we can have arrays of objects
+* pointers or objects are fine
+* when the array is initialized, the default constructor will run (or no parameter constructor) for each object
 
 **const Methods**
 
-    * const methods cannot make any changes to the fields of the object
-    * unless the fields are `mutable`
+* const methods cannot make any changes to the fields of the object
+* unless the fields are `mutable`
 
 **mutable keyword**
-    
-    * mentioend above
+
+* mentioend above
 
 **static keyword in C++**
 
-    * common among all instances of a class
-    * associates the field with the class and not objects of the class
-    * static fields must be defined external to the type's definition
-        * `int Student::numObjects = 0;`
-        * We cannot do this in the constructor because the constructor is used for every object that is created
-    * static methods do not have access to the `this` pointer
-    * do not need an object to call a function inside a class that is static
-    * **derived classes have access to base class static members**
-    
+* common among all instances of a class
+* associates the field with the class and not objects of the class
+* static fields must be defined external to the type's definition
+* `int Student::numObjects = 0;`
+* We cannot do this in the constructor because the constructor is used for every object that is created
+* static methods do not have access to the `this` pointer
+* do not need an object to call a function inside a class that is static
+* **derived classes have access to base class static members**
+
 **Singleton Pattern**
 
 * Create only one object of this kind
